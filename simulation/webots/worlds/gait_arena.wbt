@@ -1,0 +1,225 @@
+#VRML_SIM R2023b utf8
+
+WorldInfo {
+  title "Spot Micro Gait Arena"
+  info [ "12-DoF servo-driven quadruped, no sensors. Keys: W walk, C crawl, T trot, S stand, Q/E turn, R reverse" ]
+  basicTimeStep 8
+  coordinateSystem "ENU"
+  contactProperties [
+    ContactProperties { material1 "rubber" material2 "arena" coulombFriction [ 1.2 ] bounce 0 }
+  ]
+}
+Viewpoint {
+  orientation 0.75464 -0.37056 -0.54148 1.47317
+  position -0.95 -0.85 0.62
+  follow "spotmicro"
+  followType "Tracking Shot"
+  followSmoothness 0.3
+}
+Background { skyColor [ 0.67 0.80 0.95 ] }
+DirectionalLight { direction -0.4 -0.3 -1 intensity 1.4 ambientIntensity 0.5 castShadows TRUE }
+Solid {
+  translation 0 0 -0.05
+  name "arena_floor"
+  contactMaterial "arena"
+  children [ Shape {
+    appearance PBRAppearance { baseColorMap ImageTexture { url [ "textures/arena_floor.png" ] } textureTransform TextureTransform { scale 16 16 } roughness 0.9 metalness 0 }
+    geometry Box { size 16.0 16.0 0.1 }
+  } ]
+  boundingObject Box { size 16.0 16.0 0.1 }
+}
+Solid {
+  translation 0 0 0.0005
+  name "start_marker"
+  children [ Shape { appearance PBRAppearance { baseColor 0.8 0.15 0.15 roughness 0.9 metalness 0 } geometry Cylinder { height 0.001 radius 0.16 subdivision 32 } } ]
+}
+Solid {
+  translation 0 8.03 0.06
+  name "wall_N"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.28 0.16 roughness 0.8 metalness 0 } geometry Box { size 16.12 0.06 0.12 } } ]
+  boundingObject Box { size 16.12 0.06 0.12 }
+}
+Solid {
+  translation 0 -8.03 0.06
+  name "wall_S"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.28 0.16 roughness 0.8 metalness 0 } geometry Box { size 16.12 0.06 0.12 } } ]
+  boundingObject Box { size 16.12 0.06 0.12 }
+}
+Solid {
+  translation 8.03 0 0.06
+  name "wall_E"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.28 0.16 roughness 0.8 metalness 0 } geometry Box { size 0.06 16 0.12 } } ]
+  boundingObject Box { size 0.06 16 0.12 }
+}
+Solid {
+  translation -8.03 0 0.06
+  name "wall_W"
+  children [ Shape { appearance PBRAppearance { baseColor 0.45 0.28 0.16 roughness 0.8 metalness 0 } geometry Box { size 0.06 16 0.12 } } ]
+  boundingObject Box { size 0.06 16 0.12 }
+}
+Robot {
+  translation 0 0 0.2535
+  name "spotmicro"
+  controller "spotmicro_gaits"
+  supervisor TRUE
+  children [
+    Transform { translation 0 0 0 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.186 0.078 0.05 } } ] }
+    Transform { translation -0.01 0 0.031 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.1 0.052 0.012 } } ] }
+    Transform { translation 0.095 0 0.004 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.012 0.06 0.03 } } ] }
+    
+    HingeJoint {
+      jointParameters HingeJointParameters { axis 1 0 0 anchor 0.093 0.039 0 }
+      device [ RotationalMotor { name "fl_hip_abd" minPosition -0.7 maxPosition 0.7 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+      endPoint Solid {
+        translation 0.093 0.039 0
+        name "fl_shoulder"
+        children [
+          Transform { translation 0 0.0275 0 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.034 0.089 0.034 } } ] }
+          HingeJoint {
+            jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0.055 0 }
+            device [ RotationalMotor { name "fl_hip_pitch" minPosition -1.6 maxPosition 1.6 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+            endPoint Solid {
+              translation 0 0.055 0
+              name "fl_thigh"
+              children [
+                Transform { translation 0 0 -0.05375 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.022 0.02 0.1275 } } ] }
+                HingeJoint {
+                  jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 -0.1075 }
+                  device [ RotationalMotor { name "fl_knee" minPosition -2.6 maxPosition 0.2 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+                  endPoint Solid {
+                    translation 0 0 -0.1075
+                    name "fl_shank"
+                    contactMaterial "rubber"
+                    children [ Transform { translation 0 0 -0.065 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.016 0.014 0.13 } } ] } Transform { translation 0 0 -0.13 children [ Shape { appearance PBRAppearance { baseColor 0.75 0.77 0.80 roughness 0.6 metalness 0 } geometry Sphere { radius 0.012 subdivision 2 } } ] } ]
+                    boundingObject Group { children [ Transform { translation 0 0 -0.065 children [ Box { size 0.016 0.014 0.13 } ] } Transform { translation 0 0 -0.13 children [ Sphere { radius 0.012 } ] } ] }
+                    physics Physics { density -1 mass 0.05 }
+                  }
+                }
+              ]
+              boundingObject Transform { translation 0 0 -0.05375 children [ Box { size 0.022 0.020 0.1275 } ] }
+              physics Physics { density -1 mass 0.09 }
+            }
+          }
+        ]
+        boundingObject Transform { translation 0 0.0275 0 children [ Box { size 0.034 0.089 0.034 } ] }
+        physics Physics { density -1 mass 0.06 }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { axis 1 0 0 anchor 0.093 -0.039 0 }
+      device [ RotationalMotor { name "fr_hip_abd" minPosition -0.7 maxPosition 0.7 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+      endPoint Solid {
+        translation 0.093 -0.039 0
+        name "fr_shoulder"
+        children [
+          Transform { translation 0 -0.0275 0 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.034 0.089 0.034 } } ] }
+          HingeJoint {
+            jointParameters HingeJointParameters { axis 0 1 0 anchor 0 -0.055 0 }
+            device [ RotationalMotor { name "fr_hip_pitch" minPosition -1.6 maxPosition 1.6 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+            endPoint Solid {
+              translation 0 -0.055 0
+              name "fr_thigh"
+              children [
+                Transform { translation 0 0 -0.05375 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.022 0.02 0.1275 } } ] }
+                HingeJoint {
+                  jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 -0.1075 }
+                  device [ RotationalMotor { name "fr_knee" minPosition -2.6 maxPosition 0.2 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+                  endPoint Solid {
+                    translation 0 0 -0.1075
+                    name "fr_shank"
+                    contactMaterial "rubber"
+                    children [ Transform { translation 0 0 -0.065 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.016 0.014 0.13 } } ] } Transform { translation 0 0 -0.13 children [ Shape { appearance PBRAppearance { baseColor 0.75 0.77 0.80 roughness 0.6 metalness 0 } geometry Sphere { radius 0.012 subdivision 2 } } ] } ]
+                    boundingObject Group { children [ Transform { translation 0 0 -0.065 children [ Box { size 0.016 0.014 0.13 } ] } Transform { translation 0 0 -0.13 children [ Sphere { radius 0.012 } ] } ] }
+                    physics Physics { density -1 mass 0.05 }
+                  }
+                }
+              ]
+              boundingObject Transform { translation 0 0 -0.05375 children [ Box { size 0.022 0.020 0.1275 } ] }
+              physics Physics { density -1 mass 0.09 }
+            }
+          }
+        ]
+        boundingObject Transform { translation 0 -0.0275 0 children [ Box { size 0.034 0.089 0.034 } ] }
+        physics Physics { density -1 mass 0.06 }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { axis 1 0 0 anchor -0.093 0.039 0 }
+      device [ RotationalMotor { name "rl_hip_abd" minPosition -0.7 maxPosition 0.7 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+      endPoint Solid {
+        translation -0.093 0.039 0
+        name "rl_shoulder"
+        children [
+          Transform { translation 0 0.0275 0 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.034 0.089 0.034 } } ] }
+          HingeJoint {
+            jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0.055 0 }
+            device [ RotationalMotor { name "rl_hip_pitch" minPosition -1.6 maxPosition 1.6 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+            endPoint Solid {
+              translation 0 0.055 0
+              name "rl_thigh"
+              children [
+                Transform { translation 0 0 -0.05375 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.022 0.02 0.1275 } } ] }
+                HingeJoint {
+                  jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 -0.1075 }
+                  device [ RotationalMotor { name "rl_knee" minPosition -2.6 maxPosition 0.2 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+                  endPoint Solid {
+                    translation 0 0 -0.1075
+                    name "rl_shank"
+                    contactMaterial "rubber"
+                    children [ Transform { translation 0 0 -0.065 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.016 0.014 0.13 } } ] } Transform { translation 0 0 -0.13 children [ Shape { appearance PBRAppearance { baseColor 0.75 0.77 0.80 roughness 0.6 metalness 0 } geometry Sphere { radius 0.012 subdivision 2 } } ] } ]
+                    boundingObject Group { children [ Transform { translation 0 0 -0.065 children [ Box { size 0.016 0.014 0.13 } ] } Transform { translation 0 0 -0.13 children [ Sphere { radius 0.012 } ] } ] }
+                    physics Physics { density -1 mass 0.05 }
+                  }
+                }
+              ]
+              boundingObject Transform { translation 0 0 -0.05375 children [ Box { size 0.022 0.020 0.1275 } ] }
+              physics Physics { density -1 mass 0.09 }
+            }
+          }
+        ]
+        boundingObject Transform { translation 0 0.0275 0 children [ Box { size 0.034 0.089 0.034 } ] }
+        physics Physics { density -1 mass 0.06 }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters { axis 1 0 0 anchor -0.093 -0.039 0 }
+      device [ RotationalMotor { name "rr_hip_abd" minPosition -0.7 maxPosition 0.7 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+      endPoint Solid {
+        translation -0.093 -0.039 0
+        name "rr_shoulder"
+        children [
+          Transform { translation 0 -0.0275 0 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.034 0.089 0.034 } } ] }
+          HingeJoint {
+            jointParameters HingeJointParameters { axis 0 1 0 anchor 0 -0.055 0 }
+            device [ RotationalMotor { name "rr_hip_pitch" minPosition -1.6 maxPosition 1.6 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+            endPoint Solid {
+              translation 0 -0.055 0
+              name "rr_thigh"
+              children [
+                Transform { translation 0 0 -0.05375 children [ Shape { appearance PBRAppearance { baseColor 0.98 0.76 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.022 0.02 0.1275 } } ] }
+                HingeJoint {
+                  jointParameters HingeJointParameters { axis 0 1 0 anchor 0 0 -0.1075 }
+                  device [ RotationalMotor { name "rr_knee" minPosition -2.6 maxPosition 0.2 maxTorque 1.2 maxVelocity 6.0 controlPID 30 0 0 } ]
+                  endPoint Solid {
+                    translation 0 0 -0.1075
+                    name "rr_shank"
+                    contactMaterial "rubber"
+                    children [ Transform { translation 0 0 -0.065 children [ Shape { appearance PBRAppearance { baseColor 0.08 0.08 0.08 roughness 0.6 metalness 0 } geometry Box { size 0.016 0.014 0.13 } } ] } Transform { translation 0 0 -0.13 children [ Shape { appearance PBRAppearance { baseColor 0.75 0.77 0.80 roughness 0.6 metalness 0 } geometry Sphere { radius 0.012 subdivision 2 } } ] } ]
+                    boundingObject Group { children [ Transform { translation 0 0 -0.065 children [ Box { size 0.016 0.014 0.13 } ] } Transform { translation 0 0 -0.13 children [ Sphere { radius 0.012 } ] } ] }
+                    physics Physics { density -1 mass 0.05 }
+                  }
+                }
+              ]
+              boundingObject Transform { translation 0 0 -0.05375 children [ Box { size 0.022 0.020 0.1275 } ] }
+              physics Physics { density -1 mass 0.09 }
+            }
+          }
+        ]
+        boundingObject Transform { translation 0 -0.0275 0 children [ Box { size 0.034 0.089 0.034 } ] }
+        physics Physics { density -1 mass 0.06 }
+      }
+    }
+  ]
+  boundingObject Box { size 0.186 0.078 0.05 }
+  physics Physics { density -1 mass 1.1 }
+}
