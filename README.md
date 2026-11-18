@@ -1,8 +1,8 @@
 # 🐕 Quadruped Robot — 12-DoF Four-Legged Locomotion Platform
 
-**B.Tech Robotics & Automation · Project Phase 1 · Adi Shankara Institute of Engineering & Technology, Kalady (APJ Abdul Kalam Technological University) · 2025–26**
+**B.Tech Robotics & Automation · Project Phase 1 · Adi Shankara Institute of Engineering & Technology, Kalady (APJ Abdul Kalam Technological University) ·
 
-A low-cost, modular **12-DoF quadruped** built from the open-source **Nova SM3** design, adapted to our own dimensions, **3D-printed and assembled into a working prototype**, driven by an **ESP32 + PCA9685** and 12 DS3235MG servos, with **inverse-kinematics-based crawl / walk / trot gaits** designed and simulated in **Webots**.
+ **12-DoF quadruped** built from the open-source **Nova SM3** design, adapted to our own dimensions, **3D-printed and assembled into a working prototype**, driven by an **ESP32 + PCA9685** and 12 DS3235MG servos, with **inverse-kinematics-based crawl / walk / trot gaits** designed and simulated in **Webots**.
 
 ![Webots](https://img.shields.io/badge/Simulation-Webots-blue)
 ![CAD](https://img.shields.io/badge/CAD-Fusion%20360-orange)
@@ -219,7 +219,6 @@ Education and research in legged locomotion · prototype platform for inspection
 
 The planned design uses a 12 V battery with a 20 A fuse and two buck converters: a 7.4 V servo rail fed through bulk capacitors straight to the servos (not through the driver's V+), and a 5 V rail for peripherals (microphone / USB hub for speech input). The PCA9685 carries PWM signals only.
 
-- Closed-loop balance with an MPU6050 IMU
 - Smoother velocity profile at stance/swing transitions
 - Turning through stride scaling
 - Stability-based sway from centre of mass and support polygon
@@ -227,7 +226,6 @@ The planned design uses a 12 V battery with a 20 A fuse and two buck converters:
 - Polished wireless interface, ultrasonic obstacle sensing, autonomous mode
 - Mechanical refinement, verified in Webots first
 
-Suggested software improvements are listed separately in [IMPROVEMENTS.md](IMPROVEMENTS.md); the original code is unchanged.
 
 ## 📁 Repository Structure
 ```
@@ -242,12 +240,6 @@ Quadruped-Robot/
 └── README.md
 ```
 
-## 👥 Team
-Group project, Dept. of Robotics and Automation, Adi Shankara Institute of Engineering & Technology, Kalady. Guide: Dr. Athira M.
-
-Anandanunni Vijayan · Drishya V D · Fathima Sana K S · Glynal Rose James · Joson Jose
-
-**My contribution:** I worked across all areas of the project, mainly the Webots simulation of the crawl, walk and trot gaits; I also assembled the prototype and arranged its components.
 
 ## 🙏 Credits
 - Mechanical design: based on **Nova SM3 (Nova Spot Micro 3)**, an open-source Spot-Micro-style quadruped ([Instructables page](https://instructables.com/Nova-Spot-Micro-a-Spot-Mini-Clone)). That page credits the original 3D design to Deok-yeon Kim (Thingiverse). Please see the Nova SM3 pages for the author and licence terms. <!-- TODO: add exact author and licence after checking the source page -->
