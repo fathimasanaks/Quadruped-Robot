@@ -246,10 +246,6 @@ Quadruped-Robot/
 └── README.md
 ```
 
-## 👥 Team
-Group project, Dept. of Robotics and Automation, Adi Shankara Institute of Engineering & Technology, Kalady. Guide: Dr. Athira M.
-
-**My contribution:** I worked across all areas of the project, mainly the Webots simulation of the crawl, walk and trot gaits; I also assembled the prototype and arranged its components.
 
 ## 🙏 Credits
 - Mechanical design: based on the Nova SM3 CAD files by cguweb-com ([source](https://github.com/cguweb-com/Arduino-Projects/tree/main/Nova-SM3)). The source does not state a licence, so the original CAD files are not redistributed here. We redesigned and modified the parts to our own dimensions and requirements. The original Spot Micro design is credited to Deok-yeon Kim.
